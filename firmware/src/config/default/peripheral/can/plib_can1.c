@@ -181,9 +181,9 @@ void CAN1_Initialize(void){
     false - Request has failed.
 */
 
-void CANSend(){
+void CANSend(uint16_t data){
     CANTxMessage *buffer;
-    static int SID = 0;
+    static int SID = 0x181;
      // Get base address
     buffer = (CANTxMessage*)(PA_TO_KVA1(C1FIFOUA0));
     
@@ -199,10 +199,11 @@ void CANSend(){
     // Write data into buffer
     buffer->SID.SID = SID;
     buffer->EID.EID = 0;
-    buffer->EID.DLC = 0x2;
-    buffer->DATA0.Byte0 = 0xAA;
-    buffer->DATA0.Byte1 = 0xbb;
-    SID++;
+    buffer->EID.DLC = 0x3;
+    buffer->DATA0.Byte0 = 0x30;
+    buffer->DATA0.Byte1 = (uint8_t)((data & 0xFF00)>>8);
+    buffer->DATA0.Byte2 = (uint8_t)(data & 0x00FF);
+
     // Request transmission
     C1FIFOCON0bits.UINC = true;
     C1FIFOCON0bits.TXREQ = true;

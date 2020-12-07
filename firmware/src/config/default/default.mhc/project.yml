@@ -6,13 +6,13 @@ files:
   security: NON_SECURE
   type: SOURCE
   userChecksum: C2B88D9215301ECE3DC36E4B82F2791C
-- generatedChecksum: 36DF4F478F0EADC6DD6521FBAF88F663
+- generatedChecksum: 7EB8E799734F4837F82E7D518B2A3DC0
   logicalPath: config/default
   name: initialization.c
   physicalPath: ''
   security: NON_SECURE
   type: SOURCE
-  userChecksum: 36DF4F478F0EADC6DD6521FBAF88F663
+  userChecksum: 7EB8E799734F4837F82E7D518B2A3DC0
 - generatedChecksum: 5A2353A2D046D9A256C66ED127BBEDBB
   logicalPath: config/default
   name: interrupts.c
@@ -27,20 +27,27 @@ files:
   security: NON_SECURE
   type: SOURCE
   userChecksum: null
+- generatedChecksum: 888CA449E660B0B80D9E229DD8212511
+  logicalPath: config/default/peripheral/adc
+  name: plib_adc.c
+  physicalPath: peripheral/adc
+  security: NON_SECURE
+  type: SOURCE
+  userChecksum: 888CA449E660B0B80D9E229DD8212511
 - generatedChecksum: 83441292E37AAD85C465DD11021EDF09
   logicalPath: config/default/peripheral/can
   name: plib_can1.c
   physicalPath: peripheral/can
   security: NON_SECURE
   type: SOURCE
-  userChecksum: 8BA91BE9CC2E59687E1D55E42EED43D6
-- generatedChecksum: 8E8B44FA8CBDAA5C00FBE80774F3AA53
+  userChecksum: A887F336018685D30BD3F3719DDFD399
+- generatedChecksum: 003689884963E7EE4D4E04C8F3E296D9
   logicalPath: config/default/peripheral/clk
   name: plib_clk.c
   physicalPath: peripheral/clk
   security: NON_SECURE
   type: SOURCE
-  userChecksum: 8E8B44FA8CBDAA5C00FBE80774F3AA53
+  userChecksum: 003689884963E7EE4D4E04C8F3E296D9
 - generatedChecksum: F8BB2BAA74068083A80E6E229BBCF3E3
   logicalPath: config/default/peripheral/coretimer
   name: plib_coretimer.c
@@ -69,13 +76,13 @@ files:
   security: NON_SECURE
   type: SOURCE
   userChecksum: 16BE5CCEE5F9AF5909BF3F69B51C7D93
-- generatedChecksum: DC7D2108612ACDE5455686781FF30D16
+- generatedChecksum: 84144AACF3BC978C81FCAC6933FC8365
   logicalPath: config/default
   name: definitions.h
   physicalPath: ''
   security: NON_SECURE
   type: HEADER
-  userChecksum: DC7D2108612ACDE5455686781FF30D16
+  userChecksum: 84144AACF3BC978C81FCAC6933FC8365
 - generatedChecksum: 5D5C52527AB1435153DB9B50ADE6B79D
   logicalPath: config/default
   name: device.h
@@ -83,6 +90,13 @@ files:
   security: NON_SECURE
   type: HEADER
   userChecksum: 5D5C52527AB1435153DB9B50ADE6B79D
+- generatedChecksum: D16D547619BD4EE5B852A4D9C50CA1CC
+  logicalPath: config/default/peripheral/adc
+  name: plib_adc.h
+  physicalPath: peripheral/adc
+  security: NON_SECURE
+  type: HEADER
+  userChecksum: D16D547619BD4EE5B852A4D9C50CA1CC
 - generatedChecksum: 5236FCCFA1DB9F4E7564CF7A7910BE7E
   logicalPath: config/default/peripheral/can
   name: plib_can1.h
@@ -104,13 +118,13 @@ files:
   security: NON_SECURE
   type: HEADER
   userChecksum: 7066CC390335CF75126E2A50C46E3BDD
-- generatedChecksum: 42AB7A494DCE5E0670304E02A9116167
+- generatedChecksum: 9C8441DB5D61E2F8D0078E2FA77C2F2D
   logicalPath: config/default/peripheral/coretimer
   name: plib_coretimer.h
   physicalPath: peripheral/coretimer
   security: NON_SECURE
   type: HEADER
-  userChecksum: 42AB7A494DCE5E0670304E02A9116167
+  userChecksum: 9C8441DB5D61E2F8D0078E2FA77C2F2D
 - generatedChecksum: 175901F8C8A6AACC348866C997B4653D
   logicalPath: config/default/peripheral/evic
   name: plib_evic.h
@@ -118,13 +132,13 @@ files:
   security: NON_SECURE
   type: HEADER
   userChecksum: 175901F8C8A6AACC348866C997B4653D
-- generatedChecksum: E16F554CA5D52638C32A054F1C204043
+- generatedChecksum: E049D3527C3765449EBDFAC21FA3A5C7
   logicalPath: config/default/peripheral/gpio
   name: plib_gpio.h
   physicalPath: peripheral/gpio
   security: NON_SECURE
   type: HEADER
-  userChecksum: E16F554CA5D52638C32A054F1C204043
+  userChecksum: E049D3527C3765449EBDFAC21FA3A5C7
 - generatedChecksum: 2C8543317B3F067432097AB9BD3E8672
   logicalPath: config/default
   name: toolchain_specifics.h

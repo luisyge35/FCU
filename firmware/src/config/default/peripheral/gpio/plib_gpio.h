@@ -62,6 +62,18 @@
 // *****************************************************************************
 
 
+/*** Macros for Acc1 pin ***/
+#define Acc1_Get()               ((PORTE >> 6) & 0x1)
+#define Acc1_PIN                  GPIO_PIN_RE6
+
+/*** Macros for Acc2 pin ***/
+#define Acc2_Get()               ((PORTE >> 7) & 0x1)
+#define Acc2_PIN                  GPIO_PIN_RE7
+
+/*** Macros for Brake pin ***/
+#define Brake_Get()               ((PORTC >> 1) & 0x1)
+#define Brake_PIN                  GPIO_PIN_RC1
+
 /*** Macros for STBY pin ***/
 #define STBY_Set()               (LATDSET = (1<<15))
 #define STBY_Clear()             (LATDCLR = (1<<15))

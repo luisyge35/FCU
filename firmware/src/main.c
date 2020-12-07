@@ -12,20 +12,19 @@
 // *****************************************************************************
 uint8_t message[8];
 unsigned int canFifoMessageBuffer[40];
-/*
-#define _C1CON_REQOP_POSITION                    0x00000018
-#define _C1CON_REQOP_MASK                        0x07000000
-#define _C1CON_REQOP_LENGTH                      0x00000003*/
-/*
-void CanInit(){
-    // Request to switch to config mode
-    C1CON = _C1CON_REQOP_MASK;
-    while(C1CON != 0x100);
-    
-    C1FIFOBA = KVA_TO_PA(canFifoMessageBuffer);
-    
+uint16_t adc_count;
+float Acc1;
+uint16_t adc_count2;
+float Brake;
+
+void ADCGet(){
+    AD1CHS = 0x170000;
+    ADC_InputSelect(ADC_MUX_A, ADC_INPUT_POSITIVE_AN23, ADC_INPUT_NEGATIVE_VREFL);
+    CORETIMER_DelayMs(50);
+    ADC_ConversionStart();
+    while(!ADC_ResultIsReady());
+    adc_count = ADC_ResultGet(ADC_RESULT_BUFFER_0);
 }
-*/
 int main ( void )
 {
     /* Initialize all modules */
@@ -33,8 +32,9 @@ int main ( void )
 
     while ( true )
     {
-        CORETIMER_DelayMs(1000);
-        CANSend();
+        CORETIMER_DelayMs(100);
+        ADCGet();
+        CANSend(adc_count);
         //CAN1_MessageTransmit(0x181, 8, message, 0, CAN_MSG_TX_DATA_FRAME);
         LED_Toggle();
         /* Maintain state machines of all polled MPLAB Harmony modules. */

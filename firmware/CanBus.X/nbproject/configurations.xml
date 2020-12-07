@@ -7,6 +7,9 @@
       <logicalFolder name="f1" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="default" projectFiles="true">
           <logicalFolder name="f1" displayName="peripheral" projectFiles="true">
+            <logicalFolder name="f6" displayName="adc" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/adc/plib_adc.h</itemPath>
+            </logicalFolder>
             <logicalFolder name="f4" displayName="can" projectFiles="true">
               <itemPath>../src/config/default/peripheral/can/plib_can_common.h</itemPath>
               <itemPath>../src/config/default/peripheral/can/plib_can1.h</itemPath>
@@ -45,6 +48,9 @@
       <logicalFolder name="f1" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="default" projectFiles="true">
           <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
+            <logicalFolder name="f6" displayName="adc" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/adc/plib_adc.c</itemPath>
+            </logicalFolder>
             <logicalFolder name="f4" displayName="can" projectFiles="true">
               <itemPath>../src/config/default/peripheral/can/plib_can1.c</itemPath>
             </logicalFolder>
@@ -77,6 +83,7 @@
       <logicalFolder name="f1" displayName="default.mhc" projectFiles="true">
         <itemPath>../src/config/default/default.mhc/core_timer.yml</itemPath>
         <itemPath>../src/config/default/default.mhc/core.yml</itemPath>
+        <itemPath>../src/config/default/default.mhc/adc.yml</itemPath>
         <itemPath>../src/config/default/default.mhc/can1.yml</itemPath>
         <itemPath>../src/config/default/default.mhc/GraphSettings.yml</itemPath>
         <itemPath>../src/config/default/default.mhc/settings.yml</itemPath>

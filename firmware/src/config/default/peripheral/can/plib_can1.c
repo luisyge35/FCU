@@ -144,21 +144,12 @@ void CAN1_Initialize(void){
                             | _C1CFG_SEG2PHTS_MASK;
 
     /* Set FIFO base address for all message buffers */
-    C1FIFOBA = (uint32_t)KVA_TO_PA(can_message_buffer);
+    C1FIFOBA = (uint32_t)KVA_TO_PA(canMessageFIFO);
 
     /* Configure CAN FIFOs */
-    C1FIFOCON0bits.FSIZE = 3;
-    C1FIFOCON0SET = 0x80;
-    //C1FIFOCON0 = (((4 - 1) << _C1FIFOCON0_FSIZE_POSITION) & _C1FIFOCON0_FSIZE_MASK) | _C1FIFOCON0_TXEN_MASK | ((0x0 << _C1FIFOCON0_TXPRI_POSITION) & _C1FIFOCON0_TXPRI_MASK) | ((0x0 << _C1FIFOCON0_RTREN_POSITION) & _C1FIFOCON0_RTREN_MASK);
-
-   /*
-    C1RXF0 = (0 & CAN_MSG_SID_MASK) << _C1RXF0_SID_POSITION;
-    C1FLTCON0SET = ((0x1 << _C1FLTCON0_FSEL0_POSITION) & _C1FLTCON0_FSEL0_MASK)
-                                                         | ((0x0 << _C1FLTCON0_MSEL0_POSITION) & _C1FLTCON0_MSEL0_MASK)| _C1FLTCON0_FLTEN0_MASK;*/
-
-    /* Configure CAN Acceptance Filter Masks */
-    //C1RXM0 = (0 & CAN_MSG_SID_MASK) << _C1RXM0_SID_POSITION;
-
+    C1FIFOCON0bits.FSIZE = 0;  // Only one message
+    C1FIFOCON0bits.TXEN = 1;   // It is a send fifo
+   
     /* Switch the CAN module to CAN_OPERATION_MODE. Wait until the switch is complete */
     C1CONbits.REQOP = 0;
     while (C1CONbits.OPMOD != 0);
@@ -189,15 +180,11 @@ void CAN1_Initialize(void){
     true  - Request was successful.
     false - Request has failed.
 */
-bool CAN1_MessageTransmit(uint32_t id, uint8_t length, uint8_t* data, uint8_t fifoNum, CAN_MSG_TX_ATTRIBUTE msgAttr)
-{
-    CAN_TX_RX_MSG_BUFFER *txMessage = NULL;
-    uint8_t count = 0;
-    bool status = false;
+
+void CANSend(){
     CANTxMessage *buffer;
-    uint32_t *fifoBaseAddress;
     
-    // Get base address
+     // Get base address
     buffer = (CANTxMessage*)(PA_TO_KVA1(C1FIFOUA0));
     
     // Clear buffer
@@ -213,8 +200,24 @@ bool CAN1_MessageTransmit(uint32_t id, uint8_t length, uint8_t* data, uint8_t fi
     buffer->DATA0.Byte1 = 0xbb;
     
     // Request transmission
-    C1FIFOCON0SET = 0x2000;
-/*
+    C1FIFOCON0SET = 0x00002000;
+    C1FIFOCON0SET = 0x00000008;
+    
+    
+    *(volatile uint32_t *)(&C1FIFOCON0SET + (0 * CAN_FIFO_OFFSET)) = _C1FIFOCON0_UINC_MASK;
+    *(volatile uint32_t *)(&C1FIFOCON0SET + (0 * CAN_FIFO_OFFSET)) = _C1FIFOCON0_TXREQ_MASK;
+    
+    //while (C1FIFOCON0bits.TXREQ != 0);
+}
+
+bool CAN1_MessageTransmit(uint32_t id, uint8_t length, uint8_t* data, uint8_t fifoNum, CAN_MSG_TX_ATTRIBUTE msgAttr)
+{
+    CAN_TX_RX_MSG_BUFFER *txMessage = NULL;
+    uint8_t count = 0;
+    bool status = false;
+    CANTxMessage *buffer;
+    uint32_t *fifoBaseAddress;
+    
     if ((fifoNum > (CAN_NUM_OF_FIFO - 1)) || (data == NULL))
     {
         return status;
@@ -259,7 +262,7 @@ bool CAN1_MessageTransmit(uint32_t id, uint8_t length, uint8_t* data, uint8_t fi
 
         status = true;
     }
-    */
+    
     return status;
 }
 

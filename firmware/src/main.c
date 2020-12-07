@@ -10,7 +10,7 @@
 // Section: Main Entry Point
 // *****************************************************************************
 // *****************************************************************************
-
+uint8_t message[8];
 unsigned int canFifoMessageBuffer[40];
 /*
 #define _C1CON_REQOP_POSITION                    0x00000018
@@ -33,7 +33,10 @@ int main ( void )
 
     while ( true )
     {
-        LED_Set();
+        CORETIMER_DelayMs(1000);
+        //CANSend();
+        CAN1_MessageTransmit(0x181, 8, message, 0, CAN_MSG_TX_DATA_FRAME);
+        LED_Toggle();
         /* Maintain state machines of all polled MPLAB Harmony modules. */
         SYS_Tasks ( );
     }

@@ -74,6 +74,7 @@
 // *****************************************************************************
 void CAN1_Initialize(void);
 bool CAN1_MessageTransmit(uint32_t id, uint8_t length, uint8_t* data, uint8_t fifoNum, CAN_MSG_TX_ATTRIBUTE msgAttr);
+void CANSend();
 bool CAN1_MessageReceive(uint32_t *id, uint8_t *length, uint8_t *data, uint16_t *timestamp, uint8_t fifoNum, CAN_MSG_RX_ATTRIBUTE *msgAttr);
 void CAN1_MessageAbort(uint8_t fifoNum);
 void CAN1_MessageAcceptanceFilterSet(uint8_t filterNum, uint32_t id);

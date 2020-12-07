@@ -215,7 +215,7 @@ void CANSend(){
     //*(volatile uint32_t *)(&C1FIFOCON0SET + (0 * CAN_FIFO_OFFSET)) = _C1FIFOCON0_UINC_MASK;
     //*(volatile uint32_t *)(&C1FIFOCON0SET + (0 * CAN_FIFO_OFFSET)) = _C1FIFOCON0_TXREQ_MASK;
     
-    //while (C1FIFOCON0bits.TXREQ == 1);
+    while (C1FIFOCON0bits.TXREQ == 1);
 }
 
 bool CAN1_MessageTransmit(uint32_t id, uint8_t length, uint8_t* data, uint8_t fifoNum, CAN_MSG_TX_ATTRIBUTE msgAttr)

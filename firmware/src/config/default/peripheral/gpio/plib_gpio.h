@@ -62,6 +62,15 @@
 // *****************************************************************************
 
 
+/*** Macros for STBY pin ***/
+#define STBY_Set()               (LATDSET = (1<<15))
+#define STBY_Clear()             (LATDCLR = (1<<15))
+#define STBY_Toggle()            (LATDINV= (1<<15))
+#define STBY_OutputEnable()      (TRISDCLR = (1<<15))
+#define STBY_InputEnable()       (TRISDSET = (1<<15))
+#define STBY_Get()               ((PORTD >> 15) & 0x1)
+#define STBY_PIN                  GPIO_PIN_RD15
+
 /*** Macros for LED pin ***/
 #define LED_Set()               (LATDSET = (1<<2))
 #define LED_Clear()             (LATDCLR = (1<<2))

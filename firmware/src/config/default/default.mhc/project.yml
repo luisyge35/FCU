@@ -27,13 +27,13 @@ files:
   security: NON_SECURE
   type: SOURCE
   userChecksum: null
-- generatedChecksum: 084FBB43D250E9707EEAD1E463F976CD
+- generatedChecksum: 83441292E37AAD85C465DD11021EDF09
   logicalPath: config/default/peripheral/can
   name: plib_can1.c
   physicalPath: peripheral/can
   security: NON_SECURE
   type: SOURCE
-  userChecksum: F98B8C0D9BC67201D02CACACEE9B29AE
+  userChecksum: 8BA91BE9CC2E59687E1D55E42EED43D6
 - generatedChecksum: 8E8B44FA8CBDAA5C00FBE80774F3AA53
   logicalPath: config/default/peripheral/clk
   name: plib_clk.c
@@ -55,13 +55,13 @@ files:
   security: NON_SECURE
   type: SOURCE
   userChecksum: 9573245AA1016A26B9522406787F6F58
-- generatedChecksum: E7541022C323A27EA9A059474FBD5FEA
+- generatedChecksum: 37CEE8B34B1471A0574C318AE14A591A
   logicalPath: config/default/peripheral/gpio
   name: plib_gpio.c
   physicalPath: peripheral/gpio
   security: NON_SECURE
   type: SOURCE
-  userChecksum: E7541022C323A27EA9A059474FBD5FEA
+  userChecksum: 37CEE8B34B1471A0574C318AE14A591A
 - generatedChecksum: 16BE5CCEE5F9AF5909BF3F69B51C7D93
   logicalPath: config/default/stdio
   name: xc32_monitor.c
@@ -89,7 +89,7 @@ files:
   physicalPath: peripheral/can
   security: NON_SECURE
   type: HEADER
-  userChecksum: 5236FCCFA1DB9F4E7564CF7A7910BE7E
+  userChecksum: AE7D4FCC9152DEA0FE34D6ACFCF7019B
 - generatedChecksum: 8AFBDF00241A310A8769EBA143EE6601
   logicalPath: config/default/peripheral/can
   name: plib_can_common.h
@@ -118,13 +118,13 @@ files:
   security: NON_SECURE
   type: HEADER
   userChecksum: 175901F8C8A6AACC348866C997B4653D
-- generatedChecksum: 55365519F797ABE346545A3A319110D6
+- generatedChecksum: E16F554CA5D52638C32A054F1C204043
   logicalPath: config/default/peripheral/gpio
   name: plib_gpio.h
   physicalPath: peripheral/gpio
   security: NON_SECURE
   type: HEADER
-  userChecksum: 55365519F797ABE346545A3A319110D6
+  userChecksum: E16F554CA5D52638C32A054F1C204043
 - generatedChecksum: 2C8543317B3F067432097AB9BD3E8672
   logicalPath: config/default
   name: toolchain_specifics.h

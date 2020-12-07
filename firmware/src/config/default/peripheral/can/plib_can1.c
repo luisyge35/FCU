@@ -70,7 +70,7 @@
 #define CAN_FILTER_OFFSET           0x4
 /* Acceptance Mask Offset in word (4 bytes) */
 #define CAN_ACCEPTANCE_MASK_OFFSET  0x4
-#define CAN_MESSAGE_RAM_CONFIG_SIZE 4
+#define CAN_MESSAGE_RAM_CONFIG_SIZE 1
 #define CAN_MSG_IDE_MASK            0x10000000
 #define CAN_MSG_SID_MASK            0x7FF
 #define CAN_MSG_TIMESTAMP_MASK      0xFFFF0000
@@ -183,9 +183,12 @@ void CAN1_Initialize(void){
 
 void CANSend(){
     CANTxMessage *buffer;
-    
+    static int SID = 0;
      // Get base address
     buffer = (CANTxMessage*)(PA_TO_KVA1(C1FIFOUA0));
+    
+    // Reset FIFO
+    C1FIFOCON0bits.FRESET = true;
     
     // Clear buffer
     int i = 0;
@@ -194,20 +197,25 @@ void CANSend(){
     }
     
     // Write data into buffer
-    buffer->SID.SID = 100;
+    buffer->SID.SID = SID;
+    buffer->EID.EID = 0;
     buffer->EID.DLC = 0x2;
     buffer->DATA0.Byte0 = 0xAA;
     buffer->DATA0.Byte1 = 0xbb;
-    
+    SID++;
     // Request transmission
-    C1FIFOCON0SET = 0x00002000;
-    C1FIFOCON0SET = 0x00000008;
+    C1FIFOCON0bits.UINC = true;
+    C1FIFOCON0bits.TXREQ = true;
     
     
-    *(volatile uint32_t *)(&C1FIFOCON0SET + (0 * CAN_FIFO_OFFSET)) = _C1FIFOCON0_UINC_MASK;
-    *(volatile uint32_t *)(&C1FIFOCON0SET + (0 * CAN_FIFO_OFFSET)) = _C1FIFOCON0_TXREQ_MASK;
+    //C1FIFOCON0SET = 0x00002000;
+    //C1FIFOCON0SET = 0x00000008;
     
-    //while (C1FIFOCON0bits.TXREQ != 0);
+    
+    //*(volatile uint32_t *)(&C1FIFOCON0SET + (0 * CAN_FIFO_OFFSET)) = _C1FIFOCON0_UINC_MASK;
+    //*(volatile uint32_t *)(&C1FIFOCON0SET + (0 * CAN_FIFO_OFFSET)) = _C1FIFOCON0_TXREQ_MASK;
+    
+    //while (C1FIFOCON0bits.TXREQ == 1);
 }
 
 bool CAN1_MessageTransmit(uint32_t id, uint8_t length, uint8_t* data, uint8_t fifoNum, CAN_MSG_TX_ATTRIBUTE msgAttr)

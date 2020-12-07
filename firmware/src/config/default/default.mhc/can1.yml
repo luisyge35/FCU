@@ -44,7 +44,7 @@ children:
     - type: Values
       children:
       - type: User
-        attributes: {value: '4'}
+        attributes: {value: '1'}
   - type: Menu
     attributes: {id: CAN1_FIFO1}
     children:

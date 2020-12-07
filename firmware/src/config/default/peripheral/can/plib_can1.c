@@ -183,7 +183,7 @@ void CAN1_Initialize(void){
 
 void CANSend(uint16_t data){
     CANTxMessage *buffer;
-    static int SID = 0x181;
+    static int SID = 0x182;
      // Get base address
     buffer = (CANTxMessage*)(PA_TO_KVA1(C1FIFOUA0));
     

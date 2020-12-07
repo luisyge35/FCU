@@ -36,16 +36,20 @@
 // *****************************************************************************
 
 unsigned int canFifoMessageBuffer[40];
-
+/*
+#define _C1CON_REQOP_POSITION                    0x00000018
+#define _C1CON_REQOP_MASK                        0x07000000
+#define _C1CON_REQOP_LENGTH                      0x00000003*/
+/*
 void CanInit(){
     // Request to switch to config mode
-    C1CON = 0x100;
+    C1CON = _C1CON_REQOP_MASK;
     while(C1CON != 0x100);
     
     C1FIFOBA = KVA_TO_PA(canFifoMessageBuffer);
     
 }
-
+*/
 int main ( void )
 {
     /* Initialize all modules */

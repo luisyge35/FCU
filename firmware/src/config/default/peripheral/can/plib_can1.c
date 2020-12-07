@@ -57,7 +57,7 @@
 // *****************************************************************************
 // *****************************************************************************
 /* Number of configured FIFO */
-#define CAN_NUM_OF_FIFO             2
+#define CAN_NUM_OF_FIFO             1
 /* Maximum number of CAN Message buffers in each FIFO */
 #define CAN_FIFO_MESSAGE_BUFFER_MAX 32
 
@@ -70,7 +70,7 @@
 #define CAN_FILTER_OFFSET           0x4
 /* Acceptance Mask Offset in word (4 bytes) */
 #define CAN_ACCEPTANCE_MASK_OFFSET  0x4
-#define CAN_MESSAGE_RAM_CONFIG_SIZE 2
+#define CAN_MESSAGE_RAM_CONFIG_SIZE 4
 #define CAN_MSG_IDE_MASK            0x10000000
 #define CAN_MSG_SID_MASK            0x7FF
 #define CAN_MSG_TIMESTAMP_MASK      0xFFFF0000
@@ -108,8 +108,10 @@ void CAN1_Initialize(void)
     C1CONSET = _C1CON_ON_MASK;
 
     /* Switch the CAN module to Configuration mode. Wait until the switch is complete */
-    C1CON = (C1CON & ~_C1CON_REQOP_MASK) | ((CAN_CONFIGURATION_MODE << _C1CON_REQOP_POSITION) & _C1CON_REQOP_MASK);
-    while(((C1CON & _C1CON_OPMOD_MASK) >> _C1CON_OPMOD_POSITION) != CAN_CONFIGURATION_MODE);
+    C1CONbits.REQOP = 0x4;
+    while(C1CONbits.OPMOD != 0x4);
+   /* C1CON = (C1CON & ~_C1CON_REQOP_MASK) | ((CAN_CONFIGURATION_MODE << _C1CON_REQOP_POSITION) & _C1CON_REQOP_MASK);
+    while(((C1CON & _C1CON_OPMOD_MASK) >> _C1CON_OPMOD_POSITION) != CAN_CONFIGURATION_MODE);*/
 
     /* Set the Bitrate to 500 Kbps */
     C1CFG = ((1 << _C1CFG_BRP_POSITION) & _C1CFG_BRP_MASK)
@@ -123,20 +125,24 @@ void CAN1_Initialize(void)
     C1FIFOBA = (uint32_t)KVA_TO_PA(can_message_buffer);
 
     /* Configure CAN FIFOs */
-    C1FIFOCON0 = (((1 - 1) << _C1FIFOCON0_FSIZE_POSITION) & _C1FIFOCON0_FSIZE_MASK) | _C1FIFOCON0_TXEN_MASK | ((0x0 << _C1FIFOCON0_TXPRI_POSITION) & _C1FIFOCON0_TXPRI_MASK) | ((0x0 << _C1FIFOCON0_RTREN_POSITION) & _C1FIFOCON0_RTREN_MASK);
-    C1FIFOCON1 = (((1 - 1) << _C1FIFOCON1_FSIZE_POSITION) & _C1FIFOCON1_FSIZE_MASK);
+    C1FIFOCON0bits.FSIZE = 3;
+    C1FIFOCON0SET = 0x80;
+    //C1FIFOCON0 = (((4 - 1) << _C1FIFOCON0_FSIZE_POSITION) & _C1FIFOCON0_FSIZE_MASK) | _C1FIFOCON0_TXEN_MASK | ((0x0 << _C1FIFOCON0_TXPRI_POSITION) & _C1FIFOCON0_TXPRI_MASK) | ((0x0 << _C1FIFOCON0_RTREN_POSITION) & _C1FIFOCON0_RTREN_MASK);
 
-    /* Configure CAN Filters */
+   /*
     C1RXF0 = (0 & CAN_MSG_SID_MASK) << _C1RXF0_SID_POSITION;
     C1FLTCON0SET = ((0x1 << _C1FLTCON0_FSEL0_POSITION) & _C1FLTCON0_FSEL0_MASK)
-                                                         | ((0x0 << _C1FLTCON0_MSEL0_POSITION) & _C1FLTCON0_MSEL0_MASK)| _C1FLTCON0_FLTEN0_MASK;
+                                                         | ((0x0 << _C1FLTCON0_MSEL0_POSITION) & _C1FLTCON0_MSEL0_MASK)| _C1FLTCON0_FLTEN0_MASK;*/
 
     /* Configure CAN Acceptance Filter Masks */
-    C1RXM0 = (0 & CAN_MSG_SID_MASK) << _C1RXM0_SID_POSITION;
+    //C1RXM0 = (0 & CAN_MSG_SID_MASK) << _C1RXM0_SID_POSITION;
 
     /* Switch the CAN module to CAN_OPERATION_MODE. Wait until the switch is complete */
+    C1CONbits.REQOP = 0;
+    while (C1CONbits.OPMOD != 0);
+    /*
     C1CON = (C1CON & ~_C1CON_REQOP_MASK) | ((CAN_OPERATION_MODE << _C1CON_REQOP_POSITION) & _C1CON_REQOP_MASK);
-    while(((C1CON & _C1CON_OPMOD_MASK) >> _C1CON_OPMOD_POSITION) != CAN_OPERATION_MODE);
+    while(((C1CON & _C1CON_OPMOD_MASK) >> _C1CON_OPMOD_POSITION) != CAN_OPERATION_MODE);*/
 }
 
 // *****************************************************************************

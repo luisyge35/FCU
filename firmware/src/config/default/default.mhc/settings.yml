@@ -1,0 +1,14 @@
+configName: default
+folderName: CanBus
+format_version: v1.0
+frameworkPath: ../../Harmony3
+processor: PIC32MX570F512L
+projectName: CanBus
+settings:
+  PackageFilter: bt;csp;bootloader;csp_apps_pic32mx;net;touch;audio;reference_apps;core_apps_pic32mx;usb;quick_docs;gfx;bootloader_apps_uart;crypto;wireless;bsp;core;
+  FORCE_OPTIMIZATION: 'false'
+  GENERATE_BACKUP: 'true'
+  TRUSTZONE: 'false'
+  CMSISPath: ./dev_packs/arm/CMSIS/5.7.0
+  MERGE_STRATEGY: USER_ALL
+  DFPPath: ./dev_packs/Microchip/PIC32MX_DFP/1.4.241/atdf/PIC32MX570F512L.atdf

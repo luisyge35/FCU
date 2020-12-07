@@ -81,29 +81,51 @@
 
 static CAN_TX_RX_MSG_BUFFER __attribute__((coherent, aligned(32))) can_message_buffer[CAN_MESSAGE_RAM_CONFIG_SIZE];
 
-// *****************************************************************************
-// *****************************************************************************
-// CAN1 PLib Interface Routines
-// *****************************************************************************
-// *****************************************************************************
-// *****************************************************************************
-/* Function:
-    void CAN1_Initialize(void)
+uint32_t canMessageFIFO[16];
 
-   Summary:
-    Initializes given instance of the CAN peripheral.
+typedef struct{
+    unsigned SID:11;
+    unsigned : 21;
+} TxMsgSID;
 
-   Precondition:
-    None.
+typedef struct{
+    unsigned DLC:4;
+    unsigned RB0:1;
+    unsigned :3;
+    unsigned RB1:1;
+    unsigned RTR:1;
+    unsigned EID:18;
+    unsigned IDE:1;
+    unsigned SRR:1;
+    unsigned :2;
+} TxMsgEID;
 
-   Parameters:
-    None.
+typedef struct{
+    unsigned Byte0 : 8;
+    unsigned Byte1 : 8;
+    unsigned Byte2 : 8;
+    unsigned Byte3 : 8;
+} TxMsgData0;
 
-   Returns:
-    None
-*/
-void CAN1_Initialize(void)
-{
+typedef struct{
+    unsigned Byte0 : 8;
+    unsigned Byte1 : 8;
+    unsigned Byte2 : 8;
+    unsigned Byte3 : 8;
+} TxMsgData1;
+
+typedef union CANTxMessageBuffer {
+    struct{
+        TxMsgSID SID;
+        TxMsgEID EID;
+        TxMsgData0 DATA0;
+        TxMsgData1 DATA1;
+    };
+    int messageWord[4];
+} CANTxMessage;
+
+
+void CAN1_Initialize(void){
     /* Switch the CAN module ON */
     C1CONSET = _C1CON_ON_MASK;
 
@@ -172,7 +194,27 @@ bool CAN1_MessageTransmit(uint32_t id, uint8_t length, uint8_t* data, uint8_t fi
     CAN_TX_RX_MSG_BUFFER *txMessage = NULL;
     uint8_t count = 0;
     bool status = false;
-
+    CANTxMessage *buffer;
+    uint32_t *fifoBaseAddress;
+    
+    // Get base address
+    buffer = (CANTxMessage*)(PA_TO_KVA1(C1FIFOUA0));
+    
+    // Clear buffer
+    int i = 0;
+    for(i = 0; i<4 ; i++){
+        buffer->messageWord[i] = 0;
+    }
+    
+    // Write data into buffer
+    buffer->SID.SID = 100;
+    buffer->EID.DLC = 0x2;
+    buffer->DATA0.Byte0 = 0xAA;
+    buffer->DATA0.Byte1 = 0xbb;
+    
+    // Request transmission
+    C1FIFOCON0SET = 0x2000;
+/*
     if ((fifoNum > (CAN_NUM_OF_FIFO - 1)) || (data == NULL))
     {
         return status;
@@ -182,8 +224,7 @@ bool CAN1_MessageTransmit(uint32_t id, uint8_t length, uint8_t* data, uint8_t fi
     {
         txMessage = (CAN_TX_RX_MSG_BUFFER *)PA_TO_KVA1(*(volatile uint32_t *)(&C1FIFOUA0 + (fifoNum * CAN_FIFO_OFFSET)));
 
-        /* Check the id whether it falls under SID or EID,
-         * SID max limit is 0x7FF, so anything beyond that is EID */
+
         if (id > CAN_MSG_SID_MASK)
         {
             txMessage->msgSID = (id & CAN_MSG_EID_MASK) >> 18;
@@ -213,12 +254,12 @@ bool CAN1_MessageTransmit(uint32_t id, uint8_t length, uint8_t* data, uint8_t fi
             }
         }
 
-        /* Request the transmit */
         *(volatile uint32_t *)(&C1FIFOCON0SET + (fifoNum * CAN_FIFO_OFFSET)) = _C1FIFOCON0_UINC_MASK;
         *(volatile uint32_t *)(&C1FIFOCON0SET + (fifoNum * CAN_FIFO_OFFSET)) = _C1FIFOCON0_TXREQ_MASK;
 
         status = true;
     }
+    */
     return status;
 }
 

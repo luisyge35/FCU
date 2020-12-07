@@ -33,7 +33,7 @@ files:
   physicalPath: peripheral/can
   security: NON_SECURE
   type: SOURCE
-  userChecksum: 084FBB43D250E9707EEAD1E463F976CD
+  userChecksum: AFE8B2587FEB213E49E7822A937A5140
 - generatedChecksum: 8E8B44FA8CBDAA5C00FBE80774F3AA53
   logicalPath: config/default/peripheral/clk
   name: plib_clk.c

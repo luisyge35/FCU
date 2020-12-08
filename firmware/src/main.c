@@ -45,7 +45,7 @@ int main ( void )
     {
         CORETIMER_DelayMs(100);
         ADCGet();
-        CANSend(adc_count);
+        CANSend(adc_count, adc_count2);
         LED_Toggle();
         /* Maintain state machines of all polled MPLAB Harmony modules. */
         SYS_Tasks ( );

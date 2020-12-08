@@ -199,10 +199,12 @@ void CANSend(uint16_t data, uint16_t data2){
     // Write data into buffer
     buffer->SID.SID = SID;
     buffer->EID.EID = 0;
-    buffer->EID.DLC = 0x3;
+    buffer->EID.DLC = 0x5;
     buffer->DATA0.Byte0 = 0x30;
-    buffer->DATA0.Byte1 = (uint8_t)((data & 0xFF00)>>8);
+    buffer->DATA0.Byte1 = (uint8_t)((data & 0xFF00) >> 8);
     buffer->DATA0.Byte2 = (uint8_t)(data & 0x00FF);
+    buffer->DATA0.Byte3 = (uint8_t)((data2 & 0xFF00) >> 8);
+    buffer->DATA1.Byte0 = (uint8_t)(data2 & 0x00FF);
 
     // Request transmission
     C1FIFOCON0bits.UINC = true;

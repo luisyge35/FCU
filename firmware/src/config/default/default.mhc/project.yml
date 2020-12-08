@@ -27,20 +27,20 @@ files:
   security: NON_SECURE
   type: SOURCE
   userChecksum: null
-- generatedChecksum: 888CA449E660B0B80D9E229DD8212511
+- generatedChecksum: 7404CD4892DD1F6EDB2DC7DC0EAE12EB
   logicalPath: config/default/peripheral/adc
   name: plib_adc.c
   physicalPath: peripheral/adc
   security: NON_SECURE
   type: SOURCE
-  userChecksum: 888CA449E660B0B80D9E229DD8212511
+  userChecksum: C75F588D0067E414828F3F6294117862
 - generatedChecksum: 83441292E37AAD85C465DD11021EDF09
   logicalPath: config/default/peripheral/can
   name: plib_can1.c
   physicalPath: peripheral/can
   security: NON_SECURE
   type: SOURCE
-  userChecksum: A887F336018685D30BD3F3719DDFD399
+  userChecksum: B8A27B1ECCA755EC77E1E6207A8B91B9
 - generatedChecksum: 003689884963E7EE4D4E04C8F3E296D9
   logicalPath: config/default/peripheral/clk
   name: plib_clk.c
@@ -68,7 +68,7 @@ files:
   physicalPath: peripheral/gpio
   security: NON_SECURE
   type: SOURCE
-  userChecksum: 37CEE8B34B1471A0574C318AE14A591A
+  userChecksum: 05BB941926FB02EBECAF71F2A32A5B68
 - generatedChecksum: 16BE5CCEE5F9AF5909BF3F69B51C7D93
   logicalPath: config/default/stdio
   name: xc32_monitor.c
@@ -103,7 +103,7 @@ files:
   physicalPath: peripheral/can
   security: NON_SECURE
   type: HEADER
-  userChecksum: AE7D4FCC9152DEA0FE34D6ACFCF7019B
+  userChecksum: 0498A91D8A5925AFEA1D83892F1473E4
 - generatedChecksum: 8AFBDF00241A310A8769EBA143EE6601
   logicalPath: config/default/peripheral/can
   name: plib_can_common.h

@@ -142,12 +142,21 @@
 
 void SYS_Initialize ( void* data )
 {
+
     /* Start out with interrupts disabled before configuring any modules */
     __builtin_disable_interrupts();
+
+  
     CLK_Initialize();
+
     /* Set the SRAM wait states to zero */
     BMXCONbits.BMXWSDRM = 0;
+
+
+
+
 	GPIO_Initialize();
+
     CORETIMER_Initialize();
     CAN1_Initialize();
 
@@ -158,6 +167,9 @@ void SYS_Initialize ( void* data )
 
 
     EVIC_Initialize();
+
+
+
 }
 
 

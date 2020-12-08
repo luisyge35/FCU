@@ -53,9 +53,10 @@ void ADC_Initialize(void)
 {
     AD1CON1CLR = _AD1CON1_ON_MASK;
 
-    AD1CON1 = 0x4;
-    AD1CON3 = 0x9fff;
+    AD1CON2 = 0x4;
+    AD1CON3 = 0x9f13;
     AD1CHS = 0x170000;
+
 
     /* Turn ON ADC */
     AD1CON1SET = _AD1CON1_ON_MASK;
@@ -114,4 +115,5 @@ uint32_t ADC_ResultGet(ADC_RESULT_BUFFER bufferNumber)
 {
     return (*((&ADC1BUF0) + (bufferNumber << 2)));
 }
+
 

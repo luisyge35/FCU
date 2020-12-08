@@ -20,10 +20,21 @@ float Brake;
 void ADCGet(){
     AD1CHS = 0x170000;
     ADC_InputSelect(ADC_MUX_A, ADC_INPUT_POSITIVE_AN23, ADC_INPUT_NEGATIVE_VREFL);
+    ADC_SamplingStart();
     CORETIMER_DelayMs(50);
     ADC_ConversionStart();
     while(!ADC_ResultIsReady());
     adc_count = ADC_ResultGet(ADC_RESULT_BUFFER_0);
+    
+    ADC_InputSelect(ADC_MUX_A, ADC_INPUT_POSITIVE_AN27, ADC_INPUT_NEGATIVE_VREFL);
+    ADC_SamplingStart();
+    CORETIMER_DelayMs(50);
+    ADC_ConversionStart();
+    while(!ADC_ResultIsReady());
+    adc_count2 = ADC_ResultGet(ADC_RESULT_BUFFER_0);
+    
+    Brake = Brake + 1;
+    
 }
 int main ( void )
 {
@@ -35,7 +46,6 @@ int main ( void )
         CORETIMER_DelayMs(100);
         ADCGet();
         CANSend(adc_count);
-        //CAN1_MessageTransmit(0x181, 8, message, 0, CAN_MSG_TX_DATA_FRAME);
         LED_Toggle();
         /* Maintain state machines of all polled MPLAB Harmony modules. */
         SYS_Tasks ( );

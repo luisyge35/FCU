@@ -60,9 +60,12 @@ void GPIO_Initialize ( void )
     /* PORTA Initialization */
 
     /* PORTB Initialization */
+    TRISDbits.TRISD6 = 1;
+    TRISDbits.TRISD7 = 1;
 
     /* PORTC Initialization */
-
+    TRISCbits.TRISC1 = 1;
+    
     /* PORTD Initialization */
     LATD = 0x0; /* Initial Latch Value */
     TRISDCLR = 0x8004; /* Direction Control */

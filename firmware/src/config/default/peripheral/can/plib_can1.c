@@ -181,7 +181,7 @@ void CAN1_Initialize(void){
     false - Request has failed.
 */
 
-void CANSend(uint16_t data){
+void CANSend(uint16_t data, uint16_t data2){
     CANTxMessage *buffer;
     static int SID = 0x182;
      // Get base address

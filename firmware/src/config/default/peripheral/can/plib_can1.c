@@ -118,6 +118,8 @@ typedef union CANTxMessageBuffer {
     struct{
         TxMsgSID SID;
         TxMsgEID EID;
+        //uint32_t data0;
+        //uint32_t data1;
         TxMsgData0 DATA0;
         TxMsgData1 DATA1;
     };
@@ -180,7 +182,7 @@ void CAN1_Initialize(void){
     true  - Request was successful.
     false - Request has failed.
 */
-
+/*
 void CANSend(uint16_t data, uint16_t data2){
     CANTxMessage *buffer;
     static int SID = 0x182;
@@ -209,15 +211,45 @@ void CANSend(uint16_t data, uint16_t data2){
     // Request transmission
     C1FIFOCON0bits.UINC = true;
     C1FIFOCON0bits.TXREQ = true;
+   
+    while (C1FIFOCON0bits.TXREQ == 1);
+}*/
+
+void CANSendBuffer(int address, uint16_t length, uint8_t REGID, uint8_t *data){
+    CANTxMessage *buffer;
+    uint8_t i = 0;
     
+    // Get fifo base adress
+    buffer = (CANTxMessage*)(PA_TO_KVA1(C1FIFOUA0));
     
-    //C1FIFOCON0SET = 0x00002000;
-    //C1FIFOCON0SET = 0x00000008;
+    // Reset FIFO
+    C1FIFOCON0bits.FRESET = true;
     
+    // Clear buffer
+    for(i = 0; i<4 ; i++){
+        buffer->messageWord[i] = 0;
+    }
     
-    //*(volatile uint32_t *)(&C1FIFOCON0SET + (0 * CAN_FIFO_OFFSET)) = _C1FIFOCON0_UINC_MASK;
-    //*(volatile uint32_t *)(&C1FIFOCON0SET + (0 * CAN_FIFO_OFFSET)) = _C1FIFOCON0_TXREQ_MASK;
+    // Write data into buffer
+    // 1. Message info
+    buffer->SID.SID = address;
+    buffer->EID.EID = 0;
+    buffer->EID.DLC = length;
     
+    // 2. Message payload
+    buffer->DATA0.Byte0 = REGID;
+    buffer->DATA0.Byte1 = data[0];
+    buffer->DATA0.Byte2 = data[1];
+    buffer->DATA0.Byte3 = data[2];
+    /*buffer->DATA0.Byte0 = data[3];
+    buffer->DATA1.Byte1 = data[4];
+    buffer->DATA1.Byte2 = data[5];
+    buffer->DATA1.Byte3 = data[6];*/
+    
+    // Request transmission
+    C1FIFOCON0bits.UINC = true;
+    C1FIFOCON0bits.TXREQ = true;
+   
     while (C1FIFOCON0bits.TXREQ == 1);
 }
 

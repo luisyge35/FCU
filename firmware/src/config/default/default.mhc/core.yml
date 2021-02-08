@@ -382,6 +382,34 @@ children:
       children:
       - type: Dynamic
         attributes: {id: core, value: '40000000'}
+  - type: Boolean
+    attributes: {id: CAN_1_INTERRUPT_ENABLE}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: can1, value: 'true'}
+  - type: Boolean
+    attributes: {id: CAN_1_INTERRUPT_ENABLE_UPDATE}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: core, value: 'false'}
+  - type: String
+    attributes: {id: CAN_1_INTERRUPT_HANDLER}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: can1, value: CAN1_InterruptHandler}
+  - type: Boolean
+    attributes: {id: CAN_1_INTERRUPT_HANDLER_LOCK}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: can1, value: 'true'}
   - type: Integer
     attributes: {id: CMP1_CLOCK_FREQUENCY}
     children:
@@ -529,6 +557,27 @@ children:
       children:
       - type: Dynamic
         attributes: {id: core, value: ADC_Handler}
+  - type: Boolean
+    attributes: {id: EVIC_47_ENABLE}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: core, value: 'true'}
+  - type: Boolean
+    attributes: {id: EVIC_47_HANDLER_LOCK}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: core, value: 'true'}
+  - type: String
+    attributes: {id: EVIC_47_INTERRUPT_HANDLER}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: core, value: CAN1_InterruptHandler}
   - type: Integer
     attributes: {id: I2C1_CLOCK_FREQUENCY}
     children:

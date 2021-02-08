@@ -40,21 +40,25 @@ void ADCGet(){
 
 int main ( void )
 {
-    uint8_t data[4] = {0};
-    uint8_t data2[4] = {0};
+    uint8_t data[7] = {0};
     /* Initialize all modules */
     SYS_Initialize ( NULL );
 
     while ( true )
     {
-        CORETIMER_DelayMs(100);
-        ADCGet();
+        //CORETIMER_DelayMs(100);
+        //ADCGet();
         
-        data[0] = (uint8_t)((acceleratorValue & 0xFF00) >> 8);
-        data[1] = (uint8_t)(acceleratorValue & 0x00FF);
-        CANSendBuffer(BAMOCAR_RX_ADDR, 3, TORQUE_REGID, data);
+        //data[0] = (uint8_t)((acceleratorValue & 0xFF00) >> 8);
+        //data[1] = (uint8_t)(acceleratorValue & 0x00FF);
+        //CANSendBuffer(BAMOCAR_RX_ADDR, 3, TORQUE_REGID, data);
         
-        LED_Toggle();
+        //LED_Toggle();
+        
+        if(C1FIFOINT1bits.RXNEMPTYIF == 1){
+            CANSendBuffer(BAMOCAR_RX_ADDR, 3, TORQUE_REGID, data);
+            LED_Toggle();
+        }
 
         SYS_Tasks ( );
     }

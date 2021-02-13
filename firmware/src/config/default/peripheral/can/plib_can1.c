@@ -50,6 +50,7 @@
 // *****************************************************************************
 #include <sys/kmem.h>
 #include "plib_can1.h"
+#include "definitions.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -171,8 +172,9 @@ void CAN1_Initialize(void){
     C1FLTCON0bits.FLTEN1 = 1; /* Enable the filter */
     
     /* Set Interrupts */
-    IEC2SET = _IEC2_CAN1IE_MASK;
-    C1INTSET = _C1INT_SERRIE_MASK | _C1INT_CERRIE_MASK | _C1INT_IVRIE_MASK;
+    IEC2bits.CAN1IE = 1;
+    C1INTbits.RBIE = 1;
+    C1FIFOINT1bits.RXNEMPTYIE = 1;
 
     /* Initialize the CAN PLib Object */
     //memset((void *)can1RxMsg, 0x00, sizeof(can1RxMsg));
@@ -807,6 +809,7 @@ void CAN1_ErrorCallbackRegister(CAN_CALLBACK callback, uintptr_t contextHandle)
 */
 void CAN1_InterruptHandler(void)
 {
+    //LED_Toggle();
     uint8_t  msgIndex = 0;
     uint8_t  fifoNum = 0;
     uint8_t  fifoSize = 0;
@@ -838,11 +841,19 @@ void CAN1_InterruptHandler(void)
             can1ErrorCallbackObj.callback(can1ErrorCallbackObj.context);
         }
     }
-    else
-    {
+    else{
+        C1FIFOCON1SET = 0x2000;
+        C1FIFOCON1SET = 0x00004000; /* Set the FRESET bit */
+        while(C1FIFOCON1bits.FRESET == 1);
+        while(C1FIFOINT1bits.RXNEMPTYIF == 1);
+        IFS2bits.CAN1IF = 0;
+        LED_Toggle();
+    }
+   /* {
         can1Obj.errorStatus = 0;
         if (C1INT & _C1INT_RBIF_MASK)
         {
+            
             fifoNum = (uint8_t)C1VEC & _C1VEC_ICODE_MASK;
             if (fifoNum < CAN_NUM_OF_FIFO)
             {
@@ -851,12 +862,12 @@ void CAN1_InterruptHandler(void)
                 fifoSize = (*(volatile uint32_t *)(&C1FIFOCON0 + (fifoNum * CAN_FIFO_OFFSET)) & _C1FIFOCON0_FSIZE_MASK) >> _C1FIFOCON0_FSIZE_POSITION;
                 for (msgIndex = 0; msgIndex <= fifoSize; msgIndex++)
                 {
-                    /* Get a pointer to RX message buffer */
+                    // Get a pointer to RX message buffer 
                     rxMessage = (CAN_TX_RX_MSG_BUFFER *)PA_TO_KVA1(*(volatile uint32_t *)(&C1FIFOUA0 + (fifoNum * CAN_FIFO_OFFSET)));
 
                     if (can1RxMsg[fifoNum][msgIndex].buffer != NULL)
                     {
-                        /* Check if it's a extended message type */
+                        // Check if it's a extended message type 
                         if (rxMessage->msgEID & CAN_MSG_IDE_MASK)
                         {
                             *can1RxMsg[fifoNum][msgIndex].id = ((rxMessage->msgSID & CAN_MSG_SID_MASK) << 18) | ((rxMessage->msgEID >> 10) & _C1RXM0_EID_MASK);
@@ -884,7 +895,7 @@ void CAN1_InterruptHandler(void)
 
                         *can1RxMsg[fifoNum][msgIndex].size = rxMessage->msgEID & CAN_MSG_DLC_MASK;
 
-                        /* Copy the data into the payload */
+                        // Copy the data into the payload 
                         while (count < *can1RxMsg[fifoNum][msgIndex].size)
                         {
                             *can1RxMsg[fifoNum][msgIndex].buffer++ = rxMessage->msgData[count++];
@@ -895,7 +906,7 @@ void CAN1_InterruptHandler(void)
                             *can1RxMsg[fifoNum][msgIndex].timestamp = (rxMessage->msgSID & CAN_MSG_TIMESTAMP_MASK) >> 16;
                         }
                     }
-                    /* Message processing is done, update the message buffer pointer. */
+                    // Message processing is done, update the message buffer pointer. 
                     *(volatile uint32_t *)(&C1FIFOCON0SET + (fifoNum * CAN_FIFO_OFFSET)) = _C1FIFOCON0_UINC_MASK;
                 }
             }
@@ -919,5 +930,5 @@ void CAN1_InterruptHandler(void)
                 can1CallbackObj[fifoNum].callback(can1CallbackObj[fifoNum].context);
             }
         }
-    }
+    }*/
 }

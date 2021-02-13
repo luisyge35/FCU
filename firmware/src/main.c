@@ -55,10 +55,11 @@ int main ( void )
         
         //LED_Toggle();
         
-        if(C1FIFOINT1bits.RXNEMPTYIF == 1){
-            CANSendBuffer(BAMOCAR_RX_ADDR, 3, TORQUE_REGID, data);
+        /*if(C1FIFOINT1bits.RXNEMPTYIF == 1){
+            //CANSendBuffer(BAMOCAR_RX_ADDR, 3, TORQUE_REGID, data);
             LED_Toggle();
-        }
+            C1FIFOCON1SET = 0x2000;
+        }*/
 
         SYS_Tasks ( );
     }

@@ -66,6 +66,8 @@ void CAN1_InterruptHandler( void );
 /* All the handlers are defined here.  Each will call its PLIB-specific function. */
 void __ISR(_CAN_1_VECTOR, ipl1SOFT) CAN_1_Handler (void)
 {
+    //LED_Toggle();
+    //C1FIFOCON1SET = 0x2000;
     CAN1_InterruptHandler();
 }
 

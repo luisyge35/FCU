@@ -79,14 +79,14 @@ children:
     - type: Values
       children:
       - type: User
-        attributes: {value: '256'}
+        attributes: {value: '0'}
   - type: Integer
     attributes: {id: CAN1_MASK0_ID_DECIMAL}
     children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: can1, value: '256'}
+        attributes: {id: can1, value: '0'}
   - type: Menu
     attributes: {id: CAN1_MASK1}
     children:

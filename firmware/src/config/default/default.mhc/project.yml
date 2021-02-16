@@ -19,7 +19,7 @@ files:
   physicalPath: ''
   security: NON_SECURE
   type: SOURCE
-  userChecksum: D2BF6C4FB0C7CB28C552A6DFC96353F2
+  userChecksum: 5A2353A2D046D9A256C66ED127BBEDBB
 - generatedChecksum: null
   logicalPath: ''
   name: main.c
@@ -34,13 +34,13 @@ files:
   security: NON_SECURE
   type: SOURCE
   userChecksum: 7404CD4892DD1F6EDB2DC7DC0EAE12EB
-- generatedChecksum: B01991B38809B4295C7DF2B177EBF7BF
+- generatedChecksum: 0A83EDEA6C4B8A0631BDE06E44D42336
   logicalPath: config/default/peripheral/can
   name: plib_can1.c
   physicalPath: peripheral/can
   security: NON_SECURE
   type: SOURCE
-  userChecksum: 0919BAC538421DEAC0D36C2E5821B312
+  userChecksum: 48DE60B10D0790B52859AA262A02E568
 - generatedChecksum: 003689884963E7EE4D4E04C8F3E296D9
   logicalPath: config/default/peripheral/clk
   name: plib_clk.c
@@ -118,13 +118,13 @@ files:
   security: NON_SECURE
   type: HEADER
   userChecksum: 7066CC390335CF75126E2A50C46E3BDD
-- generatedChecksum: 9C8441DB5D61E2F8D0078E2FA77C2F2D
+- generatedChecksum: 966B427EF6703EBFBD7CF6E6154CBBFB
   logicalPath: config/default/peripheral/coretimer
   name: plib_coretimer.h
   physicalPath: peripheral/coretimer
   security: NON_SECURE
   type: HEADER
-  userChecksum: 9C8441DB5D61E2F8D0078E2FA77C2F2D
+  userChecksum: 966B427EF6703EBFBD7CF6E6154CBBFB
 - generatedChecksum: 175901F8C8A6AACC348866C997B4653D
   logicalPath: config/default/peripheral/evic
   name: plib_evic.h

@@ -809,7 +809,6 @@ void CAN1_ErrorCallbackRegister(CAN_CALLBACK callback, uintptr_t contextHandle)
 */
 void CAN1_InterruptHandler(void)
 {
-    //LED_Toggle();
     uint8_t  msgIndex = 0;
     uint8_t  fifoNum = 0;
     uint8_t  fifoSize = 0;
@@ -844,10 +843,10 @@ void CAN1_InterruptHandler(void)
     else{
         C1FIFOCON1SET = 0x2000;
         C1FIFOCON1SET = 0x00004000; /* Set the FRESET bit */
-        while(C1FIFOCON1bits.FRESET == 1);
-        while(C1FIFOINT1bits.RXNEMPTYIF == 1);
+        //while(C1FIFOCON1bits.FRESET == 1);
+        //while(C1FIFOINT1bits.RXNEMPTYIF == 1);
         IFS2bits.CAN1IF = 0;
-        LED_Toggle();
+        //LED_Toggle();
     }
    /* {
         can1Obj.errorStatus = 0;

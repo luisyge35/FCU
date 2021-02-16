@@ -89,7 +89,7 @@ void CORETIMER_CompareSet ( uint32_t compare )
 {
     compareValue = compare;
     _CP0_SET_COMPARE(compareValue);
-}
+    }
 
 uint32_t CORETIMER_CounterGet ( void )
 {

@@ -121,7 +121,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: adc, value: '427819008'}
+        attributes: {id: adc, value: '33554432'}
   - type: Hex
     attributes: {id: ADC_AD1CSSL2}
     children:

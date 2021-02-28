@@ -123,14 +123,13 @@ typedef union CANTxMessageBuffer {
     struct{
         TxMsgSID SID;
         TxMsgEID EID;
-        //uint32_t data0;
-        //uint32_t data1;
         TxMsgData0 DATA0;
         TxMsgData1 DATA1;
     };
     int messageWord[4];
 } CANTxMessage;
 
+uint8_t array[8];
 
 void CAN1_Initialize(void){
     /* Switch the CAN module ON */
@@ -243,6 +242,7 @@ void CANSendBuffer(int address, uint16_t length, uint8_t REGID, uint8_t *data){
     CANTxMessage *buffer;
     uint8_t i = 0;
     
+    memcpy(array, data, sizeof(array));
     // Get fifo base adress
     buffer = (CANTxMessage*)(PA_TO_KVA1(C1FIFOUA0));
     
@@ -265,10 +265,10 @@ void CANSendBuffer(int address, uint16_t length, uint8_t REGID, uint8_t *data){
     buffer->DATA0.Byte1 = data[0];
     buffer->DATA0.Byte2 = data[1];
     buffer->DATA0.Byte3 = data[2];
-    /*buffer->DATA0.Byte0 = data[3];
+    buffer->DATA1.Byte0 = data[3];
     buffer->DATA1.Byte1 = data[4];
     buffer->DATA1.Byte2 = data[5];
-    buffer->DATA1.Byte3 = data[6];*/
+    buffer->DATA1.Byte3 = data[6];
     
     // Request transmission
     C1FIFOCON0bits.UINC = true;

@@ -12,19 +12,25 @@ typedef enum{
     ERROR = 2
 } SMState;
 
-#define TICKMILISECOND  (CORE_TIMER_FREQUENCY/1000)*50 
-#define BAMOCAR_RX_ADDR (0x182)
-#define TORQUE_REGID    (0x30)
-#define ACC_1           (ADC_INPUT_POSITIVE_AN23)
-#define ACC_2           (ADC_INPUT_POSITIVE_AN27)
+#define TICKMILISECOND      (CORE_TIMER_FREQUENCY/1000)*50 
+#define BAMOCAR_RX_ADDR     (0x201)
+#define TORQUE_REGID        (0x90)
+#define SPEED_REGID         (0x31)
+#define ACC_1               (ADC_INPUT_POSITIVE_AN23)
+#define ACC_2               (ADC_INPUT_POSITIVE_AN27)
+#define ACC1_BASE_MEASURE   (395)
+#define ACC1_MAX_MEASURE    (640)
+#define ACC_THRESHOLD       (10)
+#define BAMOCAR_MAX_REF     (10000)
 
 // Private functions
 static void SetState(uint8_t newState);
 void CAN_1_Handler( void );
 uint32_t ADCGet(uint8_t channel);
 
-volatile uint16_t acceleratorValue;
+uint16_t acceleratorValue;
 volatile uint16_t acceleratorValue2;
+uint16_t bamocarRef;
 uint8_t data[8] = {0};
 uint32_t tick = 0;
 uint32_t tickGet = 0;
@@ -41,20 +47,19 @@ void SetState(uint8_t newState){
 }
     
 uint32_t ADCGet(uint8_t channel){
+    uint16_t result;
     
     ADC_InputSelect(ADC_MUX_A, channel, ADC_INPUT_NEGATIVE_VREFL);
     ADC_SamplingStart();
     CORETIMER_DelayMs(10);
     ADC_ConversionStart();
     while(!ADC_ResultIsReady());
-    return ADC_ResultGet(ADC_RESULT_BUFFER_0);
-    /*
-    ADC_InputSelect(ADC_MUX_A, ADC_INPUT_POSITIVE_AN27, ADC_INPUT_NEGATIVE_VREFL);
-    ADC_SamplingStart();
-    CORETIMER_DelayMs(50);
-    ADC_ConversionStart();
-    while(!ADC_ResultIsReady());
-    acceleratorValue2 = ADC_ResultGet(ADC_RESULT_BUFFER_0);*/
+    result = ADC_ResultGet(ADC_RESULT_BUFFER_0) - ACC1_BASE_MEASURE;
+    if(result < ACC1_MAX_MEASURE){
+        return result;
+    } else {
+        return 0;
+    }
 }
 
 int main ( void )
@@ -70,14 +75,26 @@ int main ( void )
                 if (CORETIMER_CounterGet() - tick > TICKMILISECOND){
                     tick = CORETIMER_CounterGet();
                     acceleratorValue = (uint16_t)ADCGet(ACC_1);
-                    acceleratorValue2 = (uint16_t)ADCGet(ACC_2);
-                    LED_Toggle();
+                    // Parse acc value
+                    bamocarRef = acceleratorValue * BAMOCAR_MAX_REF / (ACC1_MAX_MEASURE - ACC1_BASE_MEASURE);
                     
-                    data[0] = (uint8_t)((acceleratorValue & 0xFF00) >> 8);
-                    data[1] = (uint8_t)(acceleratorValue & 0x00FF);
-                    data[2] = (uint8_t)((acceleratorValue2 & 0xFF00) >> 8);
-                    data[3] = (uint8_t)(acceleratorValue2 & 0x00FF);
-                    CANSendBuffer(BAMOCAR_RX_ADDR, 5, TORQUE_REGID, data);
+                    //data[0] = (uint8_t)((acceleratorValue & 0xFF00) >> 8);
+                    //data[1] = (uint8_t)(acceleratorValue & 0x00FF);
+                    
+                    data[0] = (uint8_t)(bamocarRef & 0x00FF);
+                    data[1] = (uint8_t)((bamocarRef & 0xFF00) >> 8);
+                    
+                    
+                    if(bamocarRef > ACC_THRESHOLD){
+                        CANSendBuffer(BAMOCAR_RX_ADDR, 5, SPEED_REGID, data);
+                    } else {
+                        data[0] = 0;
+                        data[1] = 0;
+                        CANSendBuffer(BAMOCAR_RX_ADDR, 5, SPEED_REGID, data);
+                    }
+                    
+                    LED_Toggle();
+
                 }
                 break;
             default: 

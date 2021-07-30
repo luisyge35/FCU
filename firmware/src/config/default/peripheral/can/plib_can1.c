@@ -166,7 +166,7 @@ void CAN1_Initialize(void){
     C1FLTCON0bits.MSEL1 = 0; /* Use Mask 0 */
     C1RXF1bits.SID = 0x100; /* Filter 3 SID */
     C1RXF1bits.EXID = 0; /* Filter only SID messages */
-    C1RXM0bits.SID = 0x100; /* Ignore last 2 bits in comparison */
+    C1RXM0bits.SID = 0x7FC; /* Ignore last 2 bits in comparison */
     C1RXM0bits.MIDE = 0; /* Match only message types. */
     C1FLTCON0bits.FLTEN1 = 1; /* Enable the filter */
     

@@ -20,8 +20,11 @@ typedef enum{
 #define ACC_2               (ADC_INPUT_POSITIVE_AN27)
 #define ACC1_BASE_MEASURE   (395)
 #define ACC1_MAX_MEASURE    (640)
-#define ACC_THRESHOLD       (10)
-#define BAMOCAR_MAX_REF     (10000)
+#define ACC_THRESHOLD       (50)
+#define BAMOCAR_MAX_REF     (30000)
+#define START_ID            (0)
+#define START_REQUEST       (0xFF)
+#define STOP_REQUEST        (0xAA)
 
 // Private functions
 static void SetState(uint8_t newState);
@@ -35,10 +38,42 @@ uint8_t data[8] = {0};
 uint32_t tick = 0;
 uint32_t tickGet = 0;
 volatile uint8_t state = IDLE;
+CAN_TX_RX_MSG_BUFFER *rxMessage = NULL;
+uint32_t messageId;
+
+// CAN Message Handlers
+void HandleStartMessage(uint8_t *message){
+    switch(message[0]){
+        case START_REQUEST:
+            SetState(RUNNING);
+            break;
+        case STOP_REQUEST:
+            SetState(IDLE);
+            data[0] = 0;
+            data[1] = 0;
+            CANSendBuffer(BAMOCAR_RX_ADDR, 5, SPEED_REGID, data);
+        default:
+            break;
+    }
+}
+
+void HandleCanMessage(){    
+    rxMessage = (CAN_TX_RX_MSG_BUFFER *)PA_TO_KVA1(C1FIFOUA1);
+    
+    messageId = (rxMessage->msgSID & 0XFF);
+    
+    switch(messageId){
+        case START_ID:
+            HandleStartMessage(rxMessage->msgData);
+            break;
+        default:
+            break;
+    }
+}
 
 void __ISR(_CAN_1_VECTOR, ipl1SOFT) CAN_1_Handler (void)
 {
-    SetState(RUNNING);
+    HandleCanMessage();
     CAN1_InterruptHandler();
 }
 
@@ -73,25 +108,31 @@ int main ( void )
                 break;
             case RUNNING:
                 if (CORETIMER_CounterGet() - tick > TICKMILISECOND){
+                    
                     tick = CORETIMER_CounterGet();
+                    
                     acceleratorValue = (uint16_t)ADCGet(ACC_1);
+                    
+                    if(acceleratorValue < ACC_THRESHOLD) acceleratorValue = 0;
+                    
                     // Parse acc value
                     bamocarRef = acceleratorValue * BAMOCAR_MAX_REF / (ACC1_MAX_MEASURE - ACC1_BASE_MEASURE);
                     
-                    //data[0] = (uint8_t)((acceleratorValue & 0xFF00) >> 8);
-                    //data[1] = (uint8_t)(acceleratorValue & 0x00FF);
+                    // Get 2 complement
+                    bamocarRef = ((~bamocarRef) + 1) & 0xFFFF;
                     
                     data[0] = (uint8_t)(bamocarRef & 0x00FF);
                     data[1] = (uint8_t)((bamocarRef & 0xFF00) >> 8);
                     
+                    CANSendBuffer(BAMOCAR_RX_ADDR, 5, TORQUE_REGID, data);
                     
-                    if(bamocarRef > ACC_THRESHOLD){
+                    /*if(bamocarRef > ACC_THRESHOLD){
                         CANSendBuffer(BAMOCAR_RX_ADDR, 5, SPEED_REGID, data);
                     } else {
                         data[0] = 0;
                         data[1] = 0;
                         CANSendBuffer(BAMOCAR_RX_ADDR, 5, SPEED_REGID, data);
-                    }
+                    }*/
                     
                     LED_Toggle();
 

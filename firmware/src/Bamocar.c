@@ -15,7 +15,7 @@ void BamocarSendTorqueSignal(uint16_t torque){
     buffer[0] = (uint8_t)(torque & 0xFF);
     buffer[1] = (uint8_t)((torque & 0xFF00) >> 8);
     
-    CANSendBuffer(BAMOCAR_TRANSMISION_ADDR, 3, TORQUE_REGID, buffer);
+    //CANSendBuffer(BAMOCAR_TRANSMISION_ADDR, 3, TORQUE_REGID, buffer);
 }
 
 void BamocarStop(){

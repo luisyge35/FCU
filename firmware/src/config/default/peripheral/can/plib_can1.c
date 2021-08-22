@@ -238,7 +238,7 @@ void CANSend(uint16_t data, uint16_t data2){
     while (C1FIFOCON0bits.TXREQ == 1);
 }*/
 
-void CANSendBuffer(int address, uint16_t length, uint8_t REGID, uint8_t *data){
+void CANSendBuffer(int address, uint16_t length, uint8_t *data){
     CANTxMessage *buffer;
     uint8_t i = 0;
     
@@ -261,14 +261,14 @@ void CANSendBuffer(int address, uint16_t length, uint8_t REGID, uint8_t *data){
     buffer->EID.DLC = length;
     
     // 2. Message payload
-    buffer->DATA0.Byte0 = REGID;
-    buffer->DATA0.Byte1 = data[0];
-    buffer->DATA0.Byte2 = data[1];
-    buffer->DATA0.Byte3 = data[2];
-    buffer->DATA1.Byte0 = data[3];
-    buffer->DATA1.Byte1 = data[4];
-    buffer->DATA1.Byte2 = data[5];
-    buffer->DATA1.Byte3 = data[6];
+    buffer->DATA0.Byte0 = data[0];
+    buffer->DATA0.Byte1 = data[1];
+    buffer->DATA0.Byte2 = data[2];
+    buffer->DATA0.Byte3 = data[3];
+    buffer->DATA1.Byte0 = data[4];
+    buffer->DATA1.Byte1 = data[5];
+    buffer->DATA1.Byte2 = data[6];
+    buffer->DATA1.Byte3 = data[7];
     
     // Request transmission
     C1FIFOCON0bits.UINC = true;
